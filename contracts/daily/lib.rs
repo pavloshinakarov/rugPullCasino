@@ -24,24 +24,24 @@ const MIN_PLAYERS: u64 = 5;
 fn get_random_number(players: u64, program_id: &Pubkey) -> u64 {
     let clock = Clock::get().unwrap();
 
-    // Obtener el timestamp en segundos y multiplicarlo por 1000 para convertirlo a milisegundos
-    let timestamp_ms = clock.unix_timestamp * 1000 + clock.slot as i64;  // Agregar `slot` para más variabilidad
+    // 
+    let timestamp_ms = clock.unix_timestamp * 1000 + clock.slot as i64;  // 
 
-    // Concatenar el timestamp en milisegundos y el program_id para generar entropía
+    // 
     let mut hasher = Hasher::default();
     hasher.hash(timestamp_ms.to_le_bytes().as_ref());
     hasher.hash(program_id.as_ref());
 
     let hash_result: Hash = hasher.result();
-    let hash_bytes = hash_result.to_bytes(); // Obtener los bytes del hash
+    let hash_bytes = hash_result.to_bytes(); // 
 
-    // Extraer los primeros 8 bytes y convertirlos en u64
+    // 
     let random_number = u64::from_le_bytes([
         hash_bytes[0], hash_bytes[1], hash_bytes[2], hash_bytes[3], 
         hash_bytes[4], hash_bytes[5], hash_bytes[6], hash_bytes[7]
     ]);
 
-    // Ajustar el número al rango 1..=players
+    // 
     (random_number % players) + 1
 }
 
@@ -52,7 +52,7 @@ fn process_instruction(
 ) -> ProgramResult {
     msg!("INIT");
 
-    let storage_account = &accounts[0];  // Cuenta de almacenamiento
+    let storage_account = &accounts[0];  // 
     let pda_account = &accounts[2];
 
     if storage_account.owner != _program_id {
